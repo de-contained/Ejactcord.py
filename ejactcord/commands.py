@@ -1,8 +1,30 @@
-import json, discord, requests
+import json, discord, requests, time, datetime
 import os
 
 from discord.ext import commands
 from discord.ext import tasks
+
+class BotExt:
+      def calculateNonce(date = "now"):
+	    if date == "now":
+	    	 unixts = time.time(
+                      # Time #
+             )
+	    else:	
+		    unixts = time.mktime(
+                              date.timetuple(
+                                   # Time # 
+                       )
+                )
+                  
+	    return str(
+                      (
+                       int(
+                           unixts
+                       ) * 1000-1420070400000
+                    ) * 4194304
+          ) # Thanks Discord S.C.U.M
+
 
 class BotBypass:
       def __init__(self):
@@ -33,6 +55,40 @@ class Bot:
           self.token = token
           self.token
 
+      async def clickButton(
+                self,
+                application_id = "", 
+                channel_id = "", 
+                message_id = "", 
+                message_flags = "", 
+                guild_id = "", 
+                nonce = "", 
+                data = "", 
+                session_id = ""
+      ):
+                body = {
+                     "type": 3,
+		         "nonce": nonce,
+			   "guild_id": guild_id,
+			   "channel_id": channel_id,
+			   "message_flags": message_flags,
+			   "message_id": message_id,
+			   "application_id": application_id,
+			   "data": data,
+			   "session_id": session_id
+                }
+                 
+                res = requests.post(
+                      "https://discord.com/api/v9/interactions",
+                      headers = {
+                              "Authorization": self.token
+                      }, json = body
+                )
+                  
+                if res.status_code in [200, 201, 203, 204]:
+                   return res.json()
+                
+                  
       async def sendEmbed(
           self,
           title = "", description = "", color = "",
