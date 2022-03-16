@@ -1,137 +1,241 @@
-import json, discord, requests, time, datetime
-import os
+import aiohttp
+import requests
+
+import time, os, json, asyncio, colorama, discord
 
 from discord.ext import commands
 from discord.ext import tasks
 
-class BotExt:
-      def calculateNonce(date = "now"):
-	    if date == "now":
-	    	 unixts = time.time(
-                      # Time #
-             )
-	    else:	
-		    unixts = time.mktime(
-                              date.timetuple(
-                                   # Time # 
-                       )
-                )
-                  
-	    return str(
-                      (
-                       int(
-                           unixts
-                       ) * 1000-1420070400000
-                    ) * 4194304
-          ) # Thanks Discord S.C.U.M
+import re
 
+import pypresence
 
-class BotBypass:
-      def __init__(self):
-          print('[!] BOT BYPASS | Loaded')
-          print
-
-      def setup_embed(
+class Ejactcord:
+      def __init__(
           self,
-          title = "",
-          description = "",
-          color = ""
-      ): 
-          other_link = "&redirect=https%253A%252F%252Fdiscord.com%252Fchannels%252F%2540me"
-          other_link 
-        
-          return "https://embed.rauf.workers.dev/?title=%s&description=%s&color=%s%s" % (
-                 title.replace(
-                        " ", 
-                        "%2520"
-                 ), description.replace(
-                        " ", 
-                        "%2520"
-                 ), color, other_link
-          )
-      
-class Bot:
-      def __init__(self, token):
-          self.token = token
-          self.token
+          token,
+          discord_api
+      ):
+          self.token   = token
+          self.discord = discord_api
 
-      async def clickButton(
+          """
+          From: Ejactcord,
+          To  : TheOnlyWayUp
+
+          Thank you, for listing the problems wrong with the previous version, 
+          very bad headers, using the requests module while supposingly asynchronous, and more. 
+
+          We couldn;t have fixed everything, if it wasnt for you.
+          
+          Sincerely, Ejactcord Official
+          """
+
+          self.headers = {
+               'User-Agent'     : '', 
+               'Content-Type'   : 'application/json',
+               'Accept-Language': 'en-US,en;q=0.5',
+               'Authorization'  : token
+          }
+        
+          self.headers
+
+          self.proper_version = [
+               "9", "10"
+          ]
+
+      async def create_dm_channel(
+            self,
+            recipents = []
+      ):
+            """
+            Creates a DM channel with .. recipents
+            """
+            async with aiohttp.ClientSession(headers = self.headers
+            ) as session:
+                 async with session.post(
+                             '%s/users/@me/channels' % (
+                                       self.discord
+                             ), json = {
+                                     'recipents': recipents
+                             }
+                 ) as response:
+                       if response.status in [
+                          200,
+                          201,
+                          203,
+                          204,
+                       ]:
+                          return response.json() 
+                       else:
+                          if __name__ == "__main__":
+                             return []
+                            
+      async def create_guild(
                 self,
-                application_id = "", 
-                channel_id = "", 
-                message_id = "", 
-                message_flags = "", 
-                guild_id = "", 
-                nonce = "", 
-                data = "", 
-                session_id = ""
+                guild_name = ""
       ):
-                body = {
-                     "type": 3,
-		         "nonce": nonce,
-			   "guild_id": guild_id,
-			   "channel_id": channel_id,
-			   "message_flags": message_flags,
-			   "message_id": message_id,
-			   "application_id": application_id,
-			   "data": data,
-			   "session_id": session_id
-                }
-                 
-                res = requests.post(
-                      "https://discord.com/api/v9/interactions",
-                      headers = {
-                              "Authorization": self.token
-                      }, json = body
-                )
-                  
-                if res.status_code in [200, 201, 203, 204]:
-                   return res.json()
-                
-                  
-      async def sendEmbed(
-          self,
-          title = "", description = "", color = "",
-          channel = ""
-      ):
-          ## EMBED CONTENT ##
-          embed = BotBypass().setup_embed(
-                  title       = title,
-                  description = description,
-                  color       = color
-          ) 
-          ## PASTE ##
-          with open('ejactcord/embed_bypass.txt', 'r') as embedbypass:
-               for line in embedbypass.readlines():
-                   data = line.replace("{user.content}", "").replace("{user.embedLink}", embed)
-        
-          res = requests.post(
-                   "https://discord.com/api/v9/channels/%s/messages" % (channel),
-                   headers = {"Authorization": self.token}, json = {
-                                                            "content": data
-                   }
-          )
+            """
+            I don't think this works, but it creates a guild, and returns the json
+            """
+            async with aiohttp.ClientSession(headers = self.headers
+            ) as session:
+                 async with session.post(
+                            '%s/guilds' % (
+                                       self.discord
+                            ), json = {
+                                    'channels'           : [],
+                                    'guild_template_code': '2TffvPucqHkN',
 
-          if res.status_code in [
-                 200,
-                 201,
-                 203,
-                 204,
-          ]:
-              return res.json()
-          else:
-              return []
+                                    'icon': 'null',
+                                    'name': '%s' % (guild_name),
+
+                                    'system_channel_id': 'null'
+                            }
+                 ) as response:
+                      if response.status in [
+                         200,
+                         201,
+                         203,
+                         204,
+                      ]:
+                         return response.json()
+                      else:
+                         if __name__ == '__main__':
+                            return []
+                           
+      async def fetch_message(
+                self,
+                channel_id, 
+                message_id
+      ):
+           """
+           THIS IS NOT RECOMMENDED TO USE
+           - Unstable
+           - Technically considered API spam
+           """
         
-      def ifContent(self, message, determine):
-            if message[0]['content'] == determine:
-               return True
-              
-      async def fetchMessage(self, channel_id, message_id):
-          return requests.get(
-                 'https://discord.com/api/v9/channels/%s/messages?limit=1&around=%s' % (
-                              channel_id,
-                              message_id
-                 ), headers = {
-                            "Authorization": "%s" % (self.token)
-                 }
-          ).json()
+           async with aiohttp.ClientSession(headers = self.headers
+           ) as session:
+                async with session.post(
+                           '%s/channels/%s/messages?limit=1&around=%s' % (
+                                        self.discord,
+
+                                        channel_id,
+                                        message_id
+                           )
+                ) as response:
+                     if response.status in [
+                        200,
+                        201,
+                        203,
+                        204,
+                     ]:
+                        return response.json()
+                     else:
+                        if __name__ in "__main__":
+                           return []
+                          
+      async def send_webhook(
+                self,
+                url,
+                title = "",
+                description = "",
+                custom_json = {}
+      ):
+            """
+            Sends a webhook, either with title & description, or custom json
+            """
+            if custom_json == {}:
+               title       = title,
+               description = description
+
+               async with aiohttp.ClientSession() as session:
+                    async with session.post(
+                          url,
+                          json = {
+                               'embeds': [{
+                                       'title'      : title,
+                                       'description': description
+                               }]
+                          }
+                    ) as response:
+                         if resoponse.status_code in [
+                            200,
+                            201,
+                            203,
+                            204,
+                         ]:
+                            return response.json()
+                         else:
+                            if __name__ == "__main__":
+                               return []
+            else:
+               async with aiohttp.ClientSession() as session:
+                     async with session.post(
+                           url,
+                           json = custom_json
+                     ) as response:
+                          if response.status in [
+                             200,
+                             201,
+                             203,
+                             204
+                          ]:
+                             return response.json()
+                          else:
+                             if __name__ == "__main__":
+                                return []
+                               
+      async def user(
+                self
+      ):
+           """
+           Returns the current logged in user's data, like username, ID, and discriminator
+           """
+           async with aiohttp.ClientSession(headers = self.headers
+           ) as session:
+                 async with session.get(
+                            '%s/users/@me' % (
+                                     self.discord
+                            ),                            
+                 ) as response:
+                      if response.status in [
+                         200,
+                         201,
+                         203,
+                         204,
+                      ]:
+                         return response.json()
+                      else:
+                         if __name__ == "__main__":
+                            return []
+
+      async def change_status(
+                self,
+                text = ""
+      ):
+            async with aiohttp.ClientSession(headers = self.headers
+            ) as session:
+                 async with session.patch(
+                            '%s/users/@me/settings' % (
+                                 self.discord
+                            ),
+                            json = {
+                                 'custom_status': {
+                                        'text'  : '%s' % (
+                                               text
+                                        )
+                                 }
+                            }
+                 ) as response:
+                      if response.status in [
+                         200,
+                         201,
+                         203,
+                         204,
+                      ]:
+                         return response.json()
+                      else:
+                         if __name__ == "__main__":
+                            return []
