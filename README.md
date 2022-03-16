@@ -1,43 +1,19 @@
 # 🍆.py
-Asynchronous API Wrapper for Discord regarding message reading, embed support, and more.
+Asynchronous, Useful, and Fast
 
-## Documentation
-A very simple to use API wrapper, that uses discord.py and ejactcord.py to do simple things. 
+# Previous Versions
+These aren't available anymore, as it was an example, and testing. 
 
-### Interactions
-This is not released in `v.1`, but it allows clicking buttons, and using slash commands
+## Versions
+- 1.0, **|**  Wasn't Asynchronous
+- 1.1, **|**  Wasn't Asynchronous
+- 1.2, **|**  Asynchronous, Bad Headers, Bad JSON, Better Code Styling
 
-```py
-bot.click(
-    message_id   = "", 
-    channel_id   = ""
-    button_label = ""
-)
-```
-### Embeds
-Although, it is not stable. It uses **rauf's** embed generator, and requests, to send the embed to the current channel. 
+## Credits
+- TheOnlyWayUp, Being Specific
+- Milfhunt (Me), Developing This
 
-#### Unstable Functions
-- Text to Embed
-- Embed to Message  
+# Features Removed
+1. Sending Embeds (Too slow to actually keep, and also sloppy)
+2. Converting Text To Embed (Too slow, and contained a link to maintain)
 
-
-```py
-await bot.sendEmbed(
-      title       = "Ejactcord",
-      description = "🍆",
-      color       = "00000"
-)
-```
-
-### Check Message
-This is unneeded, but it is for `on_message` events, if you use that. 
-
-```py
-@bot.event
-async def on_message(message):
-      msg = client.fetch_message(channel_id = message.channel.id, message_id = message.id)
-      
-      if ifContent(message = msg, determine = "!credits"):
-         message.reply('Ejactcord')
-```
